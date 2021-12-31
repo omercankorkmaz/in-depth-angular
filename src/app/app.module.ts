@@ -1,18 +1,29 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Self } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { DepOneComponent } from './dep-one/dep-one.component';
+import { FacultyService } from './faculty.service';
+import { ParentForHostDirective } from './parent-for-host.directive';
+import { ChildForHostDirective } from './child-for-host.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DepOneComponent,
+    ParentForHostDirective,
+    ChildForHostDirective
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule
+    BrowserModule
   ],
-  providers: [],
+  providers: [/*FacultyService*/],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+/*
+  constructor(@Self() private facultyService: FacultyService) { 
+    facultyService.sayHi();
+  }
+*/
+}
