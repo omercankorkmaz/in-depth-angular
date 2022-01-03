@@ -1,27 +1,194 @@
-# Adv
+DI:         using a class without creating an instance of it
+injector;   creates an instance of class
+            injects into constructor
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.2.
+Module Injector - Element Injector
+Root              GrandChild Comp
+Platform          Child Comp
+Null              Root Comp
 
-## Development server
+first angular   looks at element inj tree, not found:
+                looks at module inj tree, not found;
+                got an error
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Use Injector for a service:
 
-## Code scaffolding
+    providers: [UserService] in App Module
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+OR
 
-## Build
+    @Injectable({
+    providedIn: 'root'
+    })
+    export class UserService {}
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+-----------------------------------------------------------------------------------
 
-## Running unit tests
+resolution modifiers:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+@Optional():  
+            export class DepartmentService {}
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+            constructor(private departmentService: DepartmentService) {
+                departmentService.sayHi();
+            }
 
-## Further help
+            NullInjectorError
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+            ------------------------------------------------------------------------
+
+            export class DepartmentService {}
+
+
+            constructor(@Optional() private departmentService: DepartmentService) {
+                departmentService.sayHi();
+            }
+
+            cannot read sayHi of null
+
+
+@Self():
+
+looks only in current injector
+
+            @Injectable({
+                providedIn: 'root'
+            })
+            export class FacultyService {}
+
+
+            constructor(@Self() private facultyService: FacultyService) {
+                facultyService.sayHi();
+            }
+
+            No provider for FacultyService found in NodeInjector.
+
+            ------------------------------------------------------------------------
+
+            export class FacultyService {}
+
+
+            @Component({
+                ...
+                providers: [FacultyService]
+            })
+            constructor(@Self() private facultyService: FacultyService) {
+                facultyService.sayHi();
+            }
+            
+
+@SkipSelf():
+
+opposite of @Self()
+skip the current injector - look for it only in tree
+
+
+
+@Host():
+
+    restricts the scope of service: html
+
+    not look for current components providers
+    only look for parent divs
+
+
+-----------------------------------------------------------------------------------
+
+DI:         using a class without creating an instance of it
+injector;   creates an instance of class
+            injects into constructor
+
+Module Injector - Element Injector
+Root              GrandChild Comp
+Platform          Child Comp
+Null              Root Comp
+
+first angular   looks at element inj tree, not found:
+                looks at module inj tree, not found;
+                got an error
+
+Use Injector for a service:
+
+    providers: [UserService] in App Module
+
+OR
+
+    @Injectable({
+    providedIn: 'root'
+    })
+    export class UserService {}
+
+-----------------------------------------------------------------------------------
+
+resolution modifiers:
+
+@Optional():  
+            export class DepartmentService {}
+
+
+            constructor(private departmentService: DepartmentService) {
+                departmentService.sayHi();
+            }
+
+            NullInjectorError
+
+            ------------------------------------------------------------------------
+
+            export class DepartmentService {}
+
+
+            constructor(@Optional() private departmentService: DepartmentService) {
+                departmentService.sayHi();
+            }
+
+            cannot read sayHi of null
+
+
+@Self():
+
+looks only in current injector
+
+            @Injectable({
+                providedIn: 'root'
+            })
+            export class FacultyService {}
+
+
+            constructor(@Self() private facultyService: FacultyService) {
+                facultyService.sayHi();
+            }
+
+            No provider for FacultyService found in NodeInjector.
+
+            ------------------------------------------------------------------------
+
+            export class FacultyService {}
+
+
+            @Component({
+                ...
+                providers: [FacultyService]
+            })
+            constructor(@Self() private facultyService: FacultyService) {
+                facultyService.sayHi();
+            }
+            
+
+@SkipSelf():
+
+opposite of @Self()
+skip the current injector - look for it only in tree
+
+
+
+@Host():
+
+    restricts the scope of service: html
+
+    not look for current components providers
+    only look for parent divs
+
+
+-----------------------------------------------------------------------------------
+
