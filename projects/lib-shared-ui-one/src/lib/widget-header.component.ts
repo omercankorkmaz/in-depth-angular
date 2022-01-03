@@ -16,7 +16,7 @@ export abstract class HeaderToken {
 })
 export class WidgetHeaderComponent extends HeaderToken implements OnInit {
   refresh(): void {
-    throw new Error('Method not implemented.');
+    console.log('WidgetHeaderComponent.refresh()');
   }
 
   ngOnInit(): void {}

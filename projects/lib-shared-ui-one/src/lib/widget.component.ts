@@ -22,6 +22,7 @@ export class WidgetComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    console.log(this.anotherHeader);
     this.anotherHeader.refresh();
   }
 
