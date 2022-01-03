@@ -1,4 +1,3 @@
 export interface Logger {
-    prefix: string;
-    log: () => void;
+    log(msg: string): void;
 }

@@ -1,26 +1,20 @@
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { BrowserReporterService } from './browser-reporter.service';
-import { EngagingReporterService } from './engaging-reporter.service';
-import { REPORTERS } from './reporter.token';
+import { GalleryComponent } from './gallery/gallery.component';
+import { GallerySlideComponent } from './gallery-slide/gallery-slide.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    GalleryComponent,
+    GallerySlideComponent,
   ],
   imports: [
-    BrowserModule,
-    HttpClientModule
+    BrowserModule
   ],
-  providers: [
-    { provide: REPORTERS, useExisting: BrowserReporterService, multi: true },
-    { provide: REPORTERS, useExisting: EngagingReporterService, multi: true }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-
-}
+export class AppModule { }
