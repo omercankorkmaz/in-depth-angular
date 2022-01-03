@@ -1,8 +1,10 @@
 import { Component, Injector } from '@angular/core';
-import { HttpClient } from "@angular/common/http"
-import { AppConfig, APP_CONFIG } from './config.token';
+import { BrowserReporterService } from './browser-reporter.service';
+import { APP_CONFIG } from './config.token';
+import { EngagingReporterService } from './engaging-reporter.service';
 import { LegacyLogger } from './legacy-logger';
 import { MobileLoggerService } from './mobile-logger.service';
+import { REPORTERS } from './reporter.token';
 import { WebLoggerService } from './web-logger.service';
 
 function loggerFactory(injector: Injector): MobileLoggerService | WebLoggerService {
@@ -14,51 +16,18 @@ function loggerFactory(injector: Injector): MobileLoggerService | WebLoggerServi
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  // providers: [
-  //   MobileLoggerService,  
-  //   {
-  //     provide: WebLoggerService,
-  //     useClass: MobileLoggerService
-  //   }
-  // ]
-
-  // providers: [{
-  //     provide: WebLoggerService,
-  //     useClass: MobileLoggerService
-  // }]
-
-  // providers: [{
-  //     provide: WebLoggerService,
-  //     useValue: LegacyLogger
-  // }]
-
-  /*providers: [{
-      provide: WebLoggerService,
-      useFactory: (config: AppConfig, http: HttpClient) => {
-        return config.experimentalEnabled ? new MobileLoggerService(http) : new WebLoggerService()
-      },
-      deps: [APP_CONFIG, HttpClient]
-  }]*/
-  providers: [{
-    provide: WebLoggerService,
-    useFactory: loggerFactory,
-    deps: [Injector]
-}]
+  providers: [/*
+    { provide: MobileLoggerService },
+    { provide: REPORTERS, useExisting: BrowserReporterService, multi: true },
+    { provide: REPORTERS, useExisting: EngagingReporterService, multi: true }
+  */]
 })
 export class AppComponent {
   title = 'adv';
 
   constructor(
-    private mobileLoggerService: MobileLoggerService,
-    private webLoggerService: WebLoggerService
+    private mobileLoggerService: MobileLoggerService
   ) {
-    this.mobileLoggerService.log();  // prefix: mobile-logger
-    this.webLoggerService.log()      // prefix: mobile-logger (useClass: MobileLoggerService)
-                                // prefix: legacy-logger (useValue: LegacyLogger)
-    console.log(this.mobileLoggerService === this.webLoggerService) // useClass -> false
-                                                          // useExisting -> true
-
-    console.log(this.webLoggerService);
-                                                          
+    this.mobileLoggerService.log();                                               
   }
 }
