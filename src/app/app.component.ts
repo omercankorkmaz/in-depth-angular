@@ -1,9 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { HttpClient } from "@angular/common/http"
 import { AppConfig, APP_CONFIG } from './config.token';
 import { LegacyLogger } from './legacy-logger';
 import { MobileLoggerService } from './mobile-logger.service';
 import { WebLoggerService } from './web-logger.service';
+
+function loggerFactory(injector: Injector): MobileLoggerService | WebLoggerService {
+  return  injector.get(APP_CONFIG).experimentalEnabled ? 
+          injector.get(MobileLoggerService) : 
+          injector.get(WebLoggerService)
+}
 
 @Component({
   selector: 'app-root',
@@ -26,13 +32,18 @@ import { WebLoggerService } from './web-logger.service';
   //     useValue: LegacyLogger
   // }]
 
-  providers: [{
+  /*providers: [{
       provide: WebLoggerService,
       useFactory: (config: AppConfig, http: HttpClient) => {
         return config.experimentalEnabled ? new MobileLoggerService(http) : new WebLoggerService()
       },
       deps: [APP_CONFIG, HttpClient]
-  }]
+  }]*/
+  providers: [{
+    provide: WebLoggerService,
+    useFactory: loggerFactory,
+    deps: [Injector]
+}]
 })
 export class AppComponent {
   title = 'adv';
