@@ -1,5 +1,0 @@
-LIT
-
-    tree-shaking: kodu optimize ederken uygulanan bir ölü kod eleme tekniğidir
-    on production build -- by webpack (for ex. deleting functions that not used)
-
