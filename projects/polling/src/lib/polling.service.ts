@@ -9,6 +9,6 @@ export interface PollingConfig {
 export const INTERVAL = new InjectionToken<number>('interval');
 @Injectable()
 export class PollingService {
-  public polling$ = timer(0, this.interval || 1000).pipe(shareReplay());
+  public polling$ = timer(0, this.interval || 1000).pipe(shareReplay()); // shareReplay -> subscribers gets the latest value
   constructor(@Optional() @Inject(INTERVAL) private interval: number) {}
 }
